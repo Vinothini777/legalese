@@ -1,0 +1,73 @@
+LEGALEASE - FIXED NON-REACT VERSION
+====================================
+
+STACK
+-----
+Frontend: HTML + CSS + JavaScript
+Backend: Python + FastAPI
+Database: Python built-in SQLite3
+AI: Optional Gemini REST API
+No React, Vite, Node.js, SQLAlchemy, bcrypt, python-jose, or google-genai.
+
+WHY THIS VERSION IS DIFFERENT
+-----------------------------
+If Windows shows:
+    ImportError: DLL load failed while importing _util_cy
+    An Application Control policy has blocked this file.
+
+that error comes from SQLAlchemy's compiled extension being blocked by Windows.
+This version removes SQLAlchemy completely and uses Python's built-in sqlite3.
+
+INSTALL
+-------
+1. Open PowerShell in the backend folder.
+
+2. Remove the old virtual environment if it exists:
+   Remove-Item -Recurse -Force .venv
+
+3. Create a Python 3.13 environment:
+   py -3.13 -m venv .venv
+
+4. Activate it:
+   .venv\Scripts\activate
+
+5. Upgrade pip:
+   python -m pip install --upgrade pip setuptools wheel
+
+6. Install packages:
+   python -m pip install -r requirements.txt
+
+7. Create environment file:
+   Copy-Item .env.example .env
+
+8. Start server:
+   python -m uvicorn app.main:app --reload
+
+9. Open:
+   http://127.0.0.1:8000
+
+API TEST
+--------
+Open:
+   http://127.0.0.1:8000/docs
+
+The health endpoint is:
+   http://127.0.0.1:8000/api/health
+
+GEMINI
+------
+The project works without a Gemini API key using a built-in demo response.
+To enable Gemini, edit backend/.env:
+
+GEMINI_API_KEY=your_key_here
+GEMINI_MODEL=gemini-2.5-flash
+
+If your Gemini account uses another currently available model, change GEMINI_MODEL.
+
+WINDOWS COMMAND
+---------------
+You can also double-click run.bat.
+
+IMPORTANT
+---------
+Do not copy the old .venv from the previous project. Create a fresh .venv using the commands above.

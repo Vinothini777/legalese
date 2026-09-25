@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LegalEase – AI Legal Assistant</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div id="toast"></div>
+<section id="authScreen" class="auth-screen">
+<div class="auth-card">
+<div class="brand large"><div class="brand-mark">⚖</div><div><strong>LegalEase</strong><span>AI Legal Information Assistant</span></div></div>
+<div class="auth-tabs"><button id="loginTab" class="tab active" onclick="showAuth('login')">Login</button><button id="registerTab" class="tab" onclick="showAuth('register')">Register</button></div>
+<form id="loginForm" onsubmit="login(event)"><label>Email</label><input id="loginEmail" type="email" required placeholder="you@example.com"><label>Password</label><input id="loginPassword" type="password" required placeholder="Password"><button class="primary full" type="submit">Login</button></form>
+<form id="registerForm" class="hidden" onsubmit="register(event)"><label>Full Name</label><input id="registerName" required placeholder="Your name"><label>Email</label><input id="registerEmail" type="email" required placeholder="you@example.com"><label>Password</label><input id="registerPassword" type="password" minlength="6" required placeholder="At least 6 characters"><button class="primary full" type="submit">Create Account</button></form>
+<p class="legal-note">Educational information only. LegalEase does not replace professional legal advice.</p>
+</div></section>
+
+<section id="appScreen" class="app-screen hidden">
+<aside class="sidebar">
+<div class="brand"><div class="brand-mark">⚖</div><div><strong>LegalEase</strong><span>AI Legal Assistant</span></div></div>
+<nav>
+<button class="nav-item active" data-view="dashboard" onclick="navigate('dashboard')">⌂ <span>Dashboard</span></button>
+<button class="nav-item" data-view="assistant" onclick="navigate('assistant')">✦ <span>AI Assistant</span></button>
+<button class="nav-item" data-view="documents" onclick="navigate('documents')">▤ <span>Documents</span></button>
+<button class="nav-item" data-view="history" onclick="navigate('history')">◷ <span>History</span></button>
+<button class="nav-item" data-view="profile" onclick="navigate('profile')">◎ <span>Profile</span></button>
+</nav>
+<div class="sidebar-bottom"><div class="mini-user"><div id="avatar">U</div><div><b id="sideName">User</b><small id="sideEmail">user@example.com</small></div></div><button class="logout" onclick="logout()">Logout</button></div>
+</aside>
+<main class="content">
+<header class="topbar"><div><div class="eyebrow">LEGAL INFORMATION PLATFORM</div><h1 id="pageTitle">Dashboard</h1></div><button class="mobile-menu" onclick="toggleSidebar()">☰</button></header>
+
+<section id="dashboardView" class="view">
+<div class="hero"><div><p class="eyebrow">WELCOME</p><h2>Understand legal topics with clarity.</h2><p>Ask questions, organize documents and keep your analysis history in one place.</p><button class="primary" onclick="navigate('assistant')">Ask LegalEase ✦</button></div><div class="hero-icon">⚖</div></div>
+<div class="stats"><div class="stat-card"><span>Analyses</span><strong id="statAnalyses">0</strong></div><div class="stat-card"><span>Documents</span><strong id="statDocuments">0</strong></div><div class="stat-card"><span>Account</span><strong>Active</strong></div></div>
+<div class="grid-two"><div class="card"><div class="card-head"><h3>Recent Analyses</h3><button onclick="navigate('history')">View all</button></div><div id="recentAnalyses" class="list"></div></div>
+<div class="card"><div class="card-head"><h3>Quick Actions</h3></div><button class="quick" onclick="navigate('assistant')">✦ <span><b>Ask a question</b><small>Get general legal information</small></span></button><button class="quick" onclick="newDocument()">▤ <span><b>Create document</b><small>Start a legal document workspace</small></span></button><button class="quick" onclick="navigate('history')">◷ <span><b>View history</b><small>Review previous analyses</small></span></button></div></div>
+</section>
+
+<section id="assistantView" class="view hidden"><div class="section-heading"><div><p class="eyebrow">AI ASSISTANT</p><h2>Ask LegalEase</h2></div></div>
+<div class="assistant-layout"><div class="card"><form onsubmit="analyzeIssue(event)"><label>Analysis Title</label><input id="analysisTitle" required placeholder="Example: Rental agreement question"><label>Category</label><select id="analysisCategory"><option>General</option><option>Contract</option><option>Consumer</option><option>Employment</option><option>Property</option><option>Family</option><option>Technology</option><option>Criminal</option><option>Civil</option></select><label>Your Question</label><textarea id="analysisIssue" rows="12" required placeholder="Describe the legal topic and relevant facts..."></textarea><button id="analyzeButton" class="primary full" type="submit">Analyze with LegalEase ✦</button></form></div>
+<div class="card response-card"><div class="card-head"><h3>Response</h3><span id="aiStatus" class="pill">Ready</span></div><div id="aiResponse" class="response empty">Your analysis will appear here.</div></div></div></section>
+
+<section id="documentsView" class="view hidden"><div class="section-heading"><div><p class="eyebrow">WORKSPACE</p><h2>Documents</h2></div><button class="primary" onclick="newDocument()">+ New Document</button></div>
+<div class="documents-layout"><div class="card"><div id="documentList" class="document-list"></div></div><div class="card editor"><input id="docId" type="hidden"><label>Document Title</label><input id="docTitle" placeholder="Untitled Document"><label>Content</label><textarea id="docContent" rows="20" placeholder="Write or paste your document here..."></textarea><div class="editor-actions"><button class="primary" onclick="saveDocument()">Save Document</button><button class="danger-outline" onclick="deleteCurrentDocument()">Delete</button></div></div></div></section>
+
+<section id="historyView" class="view hidden"><div class="section-heading"><div><p class="eyebrow">ACTIVITY</p><h2>Analysis History</h2></div></div><div id="historyList" class="history-list"></div></section>
+<section id="profileView" class="view hidden"><div class="section-heading"><div><p class="eyebrow">ACCOUNT</p><h2>Profile</h2></div></div><div class="card profile-card"><div class="profile-avatar" id="profileAvatar">U</div><h2 id="profileName">User</h2><p id="profileEmail">user@example.com</p><div class="profile-info"><span>Account status</span><b>Active</b></div><div class="profile-info"><span>Platform</span><b>LegalEase</b></div></div></section>
+</main></section>
+<script src="/static/app.js"></script>
+</body></html>
